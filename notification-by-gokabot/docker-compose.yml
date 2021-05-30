@@ -1,0 +1,9 @@
+version: "2.1"
+
+services:
+  notification-by-gokabot:
+    image: notification-by-gokabot
+    container_name: notification-by-gokabot
+    build:
+      context: .
+      dockerfile: Dockerfile

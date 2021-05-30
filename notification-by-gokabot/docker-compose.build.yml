@@ -1,0 +1,11 @@
+version: "2.1"
+
+services:
+  notification-by-gokabot-build:
+    image: notification-by-gokabot-build
+    container_name: notification-by-gokabot-build
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    volumes:
+      - ./:/code
