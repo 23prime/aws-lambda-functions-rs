@@ -9,3 +9,5 @@ services:
       dockerfile: Dockerfile.build
     volumes:
       - ./:/code
+      - ~/.cargo/registry:/root/.cargo/registry
+      - ~/.cargo/git:/root/.cargo/git

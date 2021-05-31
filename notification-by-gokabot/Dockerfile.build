@@ -7,6 +7,9 @@ ENV PATH $PATH:/root/.cargo/bin
 RUN rustup install stable
 
 VOLUME /code
+VOLUME /root/.cargo/registry
+VOLUME /root/.cargo/git
+
 WORKDIR /code
 
 ENTRYPOINT ["cargo", "build", "--release"]
