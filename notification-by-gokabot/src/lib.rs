@@ -1,8 +1,8 @@
+use std::env;
+
 use log::info;
 use reqwest::blocking::Client;
 use reqwest::header::{AUTHORIZATION, CONTENT_TYPE};
-use rusoto_core::region::Region;
-use rusoto_ssm::{GetParameterRequest, Ssm, SsmClient};
 use serde::Serialize;
 
 pub mod error;
@@ -35,8 +35,8 @@ struct Messages {
 async fn send_to_line(message: String) -> Result<(), Box<dyn std::error::Error>> {
     info!("Send a message to LINE.");
 
-    let target_id = get_ssm_param("gokabot.LINE_CHANNEL_TOKEN").await?;
-    let line_channel_token = get_ssm_param("gokabot.MY_USER_ID").await?;
+    let line_channel_token = env::var("LINE_CHANNEL_TOKEN").unwrap();
+    let target_id = env::var("MY_USER_ID").unwrap();
 
     let params: Params = Params {
         to: target_id,
@@ -65,24 +65,4 @@ async fn send_to_line(message: String) -> Result<(), Box<dyn std::error::Error>>
         let err_str = format!("status = {:?}, body = {:?}", status, body);
         return Err(Box::new(error::from(err_str)));
     }
-}
-
-async fn get_ssm_param(key: &str) -> Result<String, Box<dyn std::error::Error>> {
-    info!("Get SSM Parameter value of [{:?}]", key);
-
-    let client: SsmClient = SsmClient::new(Region::ApNortheast1);
-
-    let result = client
-        .get_parameter(GetParameterRequest {
-            name: key.to_string(),
-            with_decryption: Some(true),
-        })
-        .await?
-        .parameter
-        .unwrap()
-        .value
-        .unwrap();
-
-    info!("Done.");
-    return Ok(result);
 }

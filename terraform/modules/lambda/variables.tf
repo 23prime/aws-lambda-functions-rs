@@ -5,3 +5,10 @@ variable "cost_tag" {
 variable "ecr_repo" {
   type = any
 }
+
+variable "line_channel_token" {
+  type = string
+}
+variable "my_user_id" {
+  type = string
+}

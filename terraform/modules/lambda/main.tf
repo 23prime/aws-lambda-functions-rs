@@ -18,6 +18,13 @@ resource "aws_lambda_function" "notification-by-gokabot" {
     ignore_changes = [image_uri]
   }
 
+  environment {
+    variables = {
+      LINE_CHANNEL_TOKEN = var.line_channel_token
+      MY_USER_ID = var.my_user_id
+    }
+  }  
+
   tags = {
     Name = "notification-by-gokabot-rs"
     cost = var.cost_tag
