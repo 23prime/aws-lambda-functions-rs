@@ -7,6 +7,7 @@ use serde::Serialize;
 
 pub mod error;
 pub mod event;
+pub mod logger;
 
 pub async fn run(event: event::Event) -> Result<(), Box<dyn std::error::Error>> {
     let message = format!(
@@ -14,7 +15,7 @@ pub async fn run(event: event::Event) -> Result<(), Box<dyn std::error::Error>> 
         event.Records[0].Sns.Timestamp, event.Records[0].Sns.Subject, event.Records[0].Sns.Message
     );
 
-    info!("[run] message = {:?}", message);
+    info!("message = {:?}", message);
 
     return send_to_line(message).await;
 }
@@ -32,7 +33,7 @@ struct Messages {
 }
 
 async fn send_to_line(message: String) -> Result<(), Box<dyn std::error::Error>> {
-    info!("[send_to_line] Send a message to LINE.");
+    info!("Send a message to LINE.");
 
     let target_id = get_ssm_param("gokabot.LINE_CHANNEL_TOKEN").await?;
     let line_channel_token = get_ssm_param("gokabot.MY_USER_ID").await?;
@@ -53,7 +54,7 @@ async fn send_to_line(message: String) -> Result<(), Box<dyn std::error::Error>>
         .json(&params)
         .send()?;
 
-    info!("[send_to_line] response = {:?}", response);
+    info!("response = {:?}", response);
 
     let status = response.status();
 
@@ -67,7 +68,7 @@ async fn send_to_line(message: String) -> Result<(), Box<dyn std::error::Error>>
 }
 
 async fn get_ssm_param(key: &str) -> Result<String, Box<dyn std::error::Error>> {
-    info!("[get_ssm_param] Get SSM Parameter value of [{:?}]", key);
+    info!("Get SSM Parameter value of [{:?}]", key);
 
     let client: SsmClient = SsmClient::new(Region::ApNortheast1);
 
@@ -82,6 +83,6 @@ async fn get_ssm_param(key: &str) -> Result<String, Box<dyn std::error::Error>> 
         .value
         .unwrap();
 
-    info!("[get_ssm_param] Done.");
+    info!("Done.");
     return Ok(result);
 }
