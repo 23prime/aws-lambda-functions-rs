@@ -11,7 +11,7 @@ pub mod logger;
 
 pub async fn run(event: event::Event) -> Result<(), Box<dyn std::error::Error>> {
     let message = format!(
-        "[Date]\n{}\n\n[Subject]\n{}\n\n[Message]\n{}",
+        "#### From AWS/SNS ####\n[Date]\n{}\n\n[Subject]\n{}\n\n[Message]\n{}",
         event.Records[0].Sns.Timestamp, event.Records[0].Sns.Subject, event.Records[0].Sns.Message
     );
 
