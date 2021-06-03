@@ -63,6 +63,6 @@ async fn send_to_line(message: String) -> Result<(), Box<dyn std::error::Error>>
     } else {
         let body = response.text().unwrap();
         let err_str = format!("status = {:?}, body = {:?}", status, body);
-        return Err(Box::new(error::from(err_str)));
+        return Err(Box::new(error::GokabotLambdaError::new(err_str)));
     }
 }

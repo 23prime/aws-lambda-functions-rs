@@ -16,6 +16,8 @@ impl Display for GokabotLambdaError {
 
 impl Error for GokabotLambdaError {}
 
-pub fn from(str: String) -> GokabotLambdaError {
-    return GokabotLambdaError { content: str };
+impl GokabotLambdaError {
+    pub fn new(str: String) -> GokabotLambdaError {
+        return GokabotLambdaError { content: str };
+    }
 }

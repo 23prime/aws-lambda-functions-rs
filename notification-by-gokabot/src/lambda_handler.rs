@@ -22,6 +22,6 @@ async fn handler(event: event::Event, _context: Context) -> Result<(), error::Go
 
     match result {
         Ok(r) => return Ok(r),
-        Err(e) => return Err(error::from(e.to_string())),
+        Err(e) => return Err(error::GokabotLambdaError::new(e.to_string())),
     }
 }
