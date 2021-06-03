@@ -12,3 +12,7 @@ variable "line_channel_token" {
 variable "my_user_id" {
   type = string
 }
+
+variable "sns_topic" {
+  type = any
+}

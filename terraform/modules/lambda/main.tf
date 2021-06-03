@@ -2,10 +2,6 @@ data "aws_iam_role" "LambdaExecutionRoleWithGokabotSecretAccess" {
   name = "LambdaExecutionRoleWithGokabotSecretAccess"
 }
 
-data "aws_sns_topic" "notification-by-gokabot" {
-  name = "notification-by-gokabot"
-}
-
 resource "aws_lambda_function" "notification-by-gokabot" {
   function_name = "notification-by-gokabot"
 
@@ -29,4 +25,12 @@ resource "aws_lambda_function" "notification-by-gokabot" {
     Name = "notification-by-gokabot"
     cost = var.cost_tag
   }
+}
+
+resource "aws_lambda_permission" "with_sns" {
+  statement_id  = "AllowExecutionFromSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.notification-by-gokabot.function_name
+  principal     = "sns.amazonaws.com"
+  source_arn    = var.sns_topic.arn
 }

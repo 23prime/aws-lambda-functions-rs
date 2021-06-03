@@ -29,4 +29,12 @@ module "lambda" {
   ecr_repo           = module.ecr.notification-by-gokabot-repo
   line_channel_token = var.line_channel_token
   my_user_id         = var.my_user_id
+  sns_topic          = module.sns.notification-by-gokabot-topic
+}
+
+module "sns" {
+  source          = "./modules/sns"
+  cost_tag        = var.cost_tag
+  aws_account_id  = var.aws_account_id
+  lambda_function = module.lambda.notification-by-gokabot
 }
