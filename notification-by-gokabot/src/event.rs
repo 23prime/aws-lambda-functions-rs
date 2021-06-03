@@ -27,23 +27,4 @@ pub struct Sns {
     pub Signature: String,
     pub SigningCertUrl: String,
     pub UnsubscribeUrl: String,
-    pub MessageAttributes: MessageAttributes,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct MessageAttributes {
-    pub Test: Test,
-    pub TestBinary: TestBinary,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Test {
-    pub Type: String,
-    pub Value: String,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct TestBinary {
-    pub Type: String,
-    pub Value: String,
 }
