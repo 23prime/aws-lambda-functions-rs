@@ -7,7 +7,7 @@ data "aws_sns_topic" "notification-by-gokabot" {
 }
 
 resource "aws_lambda_function" "notification-by-gokabot" {
-  function_name = "notification-by-gokabot-rs"
+  function_name = "notification-by-gokabot"
 
   role         = data.aws_iam_role.LambdaExecutionRoleWithGokabotSecretAccess.arn
   package_type = "Image"
@@ -21,12 +21,12 @@ resource "aws_lambda_function" "notification-by-gokabot" {
   environment {
     variables = {
       LINE_CHANNEL_TOKEN = var.line_channel_token
-      MY_USER_ID = var.my_user_id
+      MY_USER_ID         = var.my_user_id
     }
-  }  
+  }
 
   tags = {
-    Name = "notification-by-gokabot-rs"
+    Name = "notification-by-gokabot"
     cost = var.cost_tag
   }
 }
