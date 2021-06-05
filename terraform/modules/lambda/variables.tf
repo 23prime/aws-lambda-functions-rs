@@ -16,3 +16,7 @@ variable "my_user_id" {
 variable "sns_topic" {
   type = any
 }
+
+variable "lambda_execution_role" {
+  type = any
+}

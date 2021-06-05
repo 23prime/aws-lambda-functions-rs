@@ -18,18 +18,25 @@ provider "aws" {
   region     = var.aws_region
 }
 
+module "iam" {
+  source         = "./modules/iam"
+  cost_tag       = var.cost_tag
+  aws_account_id = var.aws_account_id
+}
+
 module "ecr" {
   source   = "./modules/ecr"
   cost_tag = var.cost_tag
 }
 
 module "lambda" {
-  source             = "./modules/lambda"
-  cost_tag           = var.cost_tag
-  ecr_repo           = module.ecr.notification-by-gokabot-repo
-  line_channel_token = var.line_channel_token
-  my_user_id         = var.my_user_id
-  sns_topic          = module.sns.notification-by-gokabot-topic
+  source                = "./modules/lambda"
+  cost_tag              = var.cost_tag
+  lambda_execution_role = module.iam.LambdaExecutionRoleWithGokabotSecretAccess
+  ecr_repo              = module.ecr.notification-by-gokabot-repo
+  line_channel_token    = var.line_channel_token
+  my_user_id            = var.my_user_id
+  sns_topic             = module.sns.notification-by-gokabot-topic
 }
 
 module "sns" {

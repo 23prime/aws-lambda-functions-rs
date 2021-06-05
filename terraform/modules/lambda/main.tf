@@ -1,11 +1,7 @@
-data "aws_iam_role" "LambdaExecutionRoleWithGokabotSecretAccess" {
-  name = "LambdaExecutionRoleWithGokabotSecretAccess"
-}
-
 resource "aws_lambda_function" "notification-by-gokabot" {
   function_name = "notification-by-gokabot"
 
-  role         = data.aws_iam_role.LambdaExecutionRoleWithGokabotSecretAccess.arn
+  role         = var.lambda_execution_role.arn
   package_type = "Image"
   image_uri    = "${var.ecr_repo.repository_url}:latest"
   timeout      = 300
