@@ -1,0 +1,9 @@
+version: "2.1"
+
+services:
+  notification-to-msteams:
+    image: notification-to-msteams
+    container_name: notification-to-msteams
+    build:
+      context: .
+      dockerfile: Dockerfile

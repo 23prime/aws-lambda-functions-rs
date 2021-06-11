@@ -3,7 +3,10 @@ variable "cost_tag" {
 }
 
 variable "ecr_repo" {
-  type = any
+  type = object({
+    notification-by-gokabot = any
+    notification-to-msteams = any
+  })
 }
 
 variable "line_channel_token" {
@@ -13,8 +16,15 @@ variable "my_user_id" {
   type = string
 }
 
+variable "webhook_url" {
+  type = string
+}
+
 variable "sns_topic" {
-  type = any
+  type = object({
+    notification-by-gokabot = any
+    notification-to-msteams = any
+  })
 }
 
 variable "lambda_execution_role" {

@@ -27,3 +27,7 @@ variable "line_channel_token" {
 variable "my_user_id" {
   type = string
 }
+
+variable "webhook_url" {
+  type = string
+}

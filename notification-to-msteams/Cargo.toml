@@ -1,0 +1,26 @@
+[package]
+name = "notification-to-msteams"
+version = "0.1.0"
+authors = ["23prime <23.prime.37@gmail.com>"]
+edition = "2018"
+
+[[bin]]
+name = "notification-to-msteams"
+path = "src/lambda_handler.rs"
+
+[[test]]
+name = "local"
+path = "test/local.rs"
+
+[dependencies]
+jsonxf = "1.1"
+lambda_runtime = "0.3"
+log = "0.4"
+log4rs = "1.0"
+reqwest = { version = "0.11", features = ["blocking", "json"] }
+serde = { version = "1", features = ["derive"] }
+tokio = { version = "1.6", features = ["full"] }
+
+
+[dev-dependencies] 
+ctor = "0.1"

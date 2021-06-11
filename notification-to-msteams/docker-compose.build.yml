@@ -1,0 +1,13 @@
+version: "2.1"
+
+services:
+  notification-to-msteams-build:
+    image: notification-to-msteams-build
+    container_name: notification-to-msteams-build
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    volumes:
+      - ./:/code
+      - ~/.cargo/registry:/root/.cargo/registry
+      - ~/.cargo/git:/root/.cargo/git

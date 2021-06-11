@@ -7,5 +7,8 @@ variable "aws_account_id" {
 }
 
 variable "lambda_function" {
-  type = any
+  type = object({
+    notification-by-gokabot = any
+    notification-to-msteams = any
+  })
 }

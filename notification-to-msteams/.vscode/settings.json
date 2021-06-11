@@ -1,0 +1,13 @@
+{
+    // Rust
+    "[rust]": {
+        "editor.formatOnSave": true
+    },
+
+    // YAML
+    "[yaml]": {
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2,
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    }
+}
