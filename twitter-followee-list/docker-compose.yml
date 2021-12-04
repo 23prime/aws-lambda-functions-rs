@@ -1,0 +1,9 @@
+version: "2.1"
+
+services:
+  twitter-followee-list:
+    image: twitter-followee-list
+    container_name: twitter-followee-list
+    build:
+      context: .
+      dockerfile: Dockerfile

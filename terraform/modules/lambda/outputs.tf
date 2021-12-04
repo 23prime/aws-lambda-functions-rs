@@ -5,3 +5,7 @@ output "notification-by-gokabot" {
 output "notification-to-msteams" {
   value = aws_lambda_function.notification-to-msteams
 }
+
+output "twitter-followee-list" {
+  value = aws_lambda_function.twitter-followee-list
+}

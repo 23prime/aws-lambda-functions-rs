@@ -1,0 +1,13 @@
+version: "2.1"
+
+services:
+  twitter-followee-list-build:
+    image: twitter-followee-list-build
+    container_name: twitter-followee-list-build
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    volumes:
+      - ./:/code
+      - ~/.cargo/registry:/root/.cargo/registry
+      - ~/.cargo/git:/root/.cargo/git

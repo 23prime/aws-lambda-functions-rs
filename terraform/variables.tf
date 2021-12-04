@@ -31,3 +31,27 @@ variable "my_user_id" {
 variable "webhook_url" {
   type = string
 }
+
+variable "twitter_user_id" {
+  type = string
+}
+
+variable "twitter_list_id" {
+  type = string
+}
+
+variable "twitter_access_token" {
+  type = string
+}
+
+variable "twitter_access_token_secret" {
+  type = string
+}
+
+variable "twitter_consumer_key" {
+  type = string
+}
+
+variable "twitter_consumer_secret" {
+  type = string
+}

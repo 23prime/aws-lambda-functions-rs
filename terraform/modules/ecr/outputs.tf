@@ -5,3 +5,7 @@ output "notification-by-gokabot-repo" {
 output "notification-to-msteams-repo" {
   value = aws_ecr_repository.notification-to-msteams
 }
+
+output "twitter-followee-list-repo" {
+  value = aws_ecr_repository.twitter-followee-list
+}
