@@ -17,7 +17,7 @@ variable "aws_region" {
 variable "cost_tag" {
   type = string
 
-  default = "gokabot"
+  default = "lambda-tools"
 }
 
 variable "line_channel_token" {
