@@ -1,5 +1,5 @@
 terraform {
-  required_version = "0.14.8"
+  required_version = "1.0.3"
 
   backend "s3" {
     bucket = "tfstate-aws-lambda-functions-rs"
