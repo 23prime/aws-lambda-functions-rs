@@ -22,36 +22,29 @@ pub async fn run() -> Result<(), BoxError> {
 
     let token = get_token();
 
-    print_line();
     let me = get_me(&token).await?;
     info!("Get me: {:?}", me);
 
-    print_line();
     let mut friends = get_friends(&token, PAGE_SIZE).await?;
     friends.insert(me); // Add me for insert me to list
     info!("Get current friends and me: {:?}", friends);
 
-    print_line();
     let mut list_id = get_list_id();
     let list_result = list::show(list_id.clone(), &token).await;
     info!("Target list: {:?}", list_result);
 
     if list_result.is_err() {
-        print_line();
         let created_list = create_list(&token).await?;
         list_id = ListID::from_id(created_list.id);
     }
 
-    print_line();
     let list_members = get_list_members(list_id.clone(), &token, PAGE_SIZE).await?;
     info!("Target list members: {:?}", list_members);
 
-    print_line();
     let excess = (&list_members - &friends).into_iter().collect::<Vec<_>>();
     info!("Excess: {:?}", get_user_names(&excess, &token).await);
 
     for partial_excess in split_vec(excess, EACH_API_CALL_LIMIT_SIZE) {
-        print_line();
         let remove_result =
             list::remove_member_list(partial_excess.clone(), list_id.clone(), &token).await;
         info!(
@@ -60,7 +53,6 @@ pub async fn run() -> Result<(), BoxError> {
         );
     }
 
-    print_line();
     let deficiency = (&friends - &list_members).into_iter().collect::<Vec<_>>();
     info!(
         "Deficiency: {:?}",
@@ -68,7 +60,6 @@ pub async fn run() -> Result<(), BoxError> {
     );
 
     for partial_deficiency in split_vec(deficiency, EACH_API_CALL_LIMIT_SIZE) {
-        print_line();
         let add_result =
             list::add_member_list(partial_deficiency.clone(), list_id.clone(), &token).await;
         info!(
@@ -77,14 +68,9 @@ pub async fn run() -> Result<(), BoxError> {
         );
     }
 
-    print_line();
     info!("Done!");
 
     return Ok(());
-}
-
-fn print_line() {
-    info!("{}", "=".repeat(80));
 }
 
 fn split_vec<T>(vec: Vec<T>, each_len: usize) -> Vec<Vec<T>> {
