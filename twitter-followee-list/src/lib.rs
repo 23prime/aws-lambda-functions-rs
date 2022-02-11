@@ -110,12 +110,12 @@ fn get_token() -> Token {
 
 async fn get_me(token: &Token) -> Result<u64, BoxError> {
     let user_id = env::var("USER_ID").expect("USER_ID must be set");
-    return Ok(user::show(user_id, &token).await?.id);
+    return Ok(user::show(user_id, token).await?.id);
 }
 
 async fn get_friends(token: &Token, page_size: i32) -> Result<HashSet<u64>, BoxError> {
     let user_id = env::var("USER_ID").expect("USER_ID must be set");
-    let cursor = user::friends_ids(user_id.clone(), &token).with_page_size(page_size);
+    let cursor = user::friends_ids(user_id.clone(), token).with_page_size(page_size);
     return Ok(cursor.call().await?.response.ids.into_iter().collect());
 }
 
@@ -123,7 +123,7 @@ async fn get_user_names(ids: &Vec<u64>, token: &Token) -> Result<Vec<String>, Bo
     let mut result = vec![];
 
     for id in ids {
-        let name = get_user_name(*id, &token).await?;
+        let name = get_user_name(*id, token).await?;
         result.push(name);
     }
 
@@ -131,7 +131,7 @@ async fn get_user_names(ids: &Vec<u64>, token: &Token) -> Result<Vec<String>, Bo
 }
 
 async fn get_user_name(id: u64, token: &Token) -> Result<String, BoxError> {
-    return Ok(user::show(id, &token).await?.response.name);
+    return Ok(user::show(id, token).await?.response.name);
 }
 
 fn get_list_id() -> ListID {
@@ -148,7 +148,7 @@ async fn create_list(token: &Token) -> Result<List, BoxError> {
         list_name.to_string(),
         true,
         Some(list_name.to_string()),
-        &token,
+        token,
     )
     .await?
     .response;
@@ -162,7 +162,7 @@ async fn get_list_members(
     token: &Token,
     page_size: i32,
 ) -> Result<HashSet<u64>, BoxError> {
-    let cursor = list::members(list_id.clone(), &token).with_page_size(page_size);
+    let cursor = list::members(list_id.clone(), token).with_page_size(page_size);
     return Ok(cursor
         .call()
         .await?
