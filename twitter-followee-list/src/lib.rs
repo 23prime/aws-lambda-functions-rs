@@ -119,7 +119,7 @@ async fn get_friends(token: &Token, page_size: i32) -> Result<HashSet<u64>, BoxE
     return Ok(cursor.call().await?.response.ids.into_iter().collect());
 }
 
-async fn get_user_names(ids: &Vec<u64>, token: &Token) -> Result<Vec<String>, BoxError> {
+async fn get_user_names(ids: &[u64], token: &Token) -> Result<Vec<String>, BoxError> {
     let mut result = vec![];
 
     for id in ids {
