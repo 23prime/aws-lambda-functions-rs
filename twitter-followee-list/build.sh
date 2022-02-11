@@ -1,13 +1,19 @@
-#!/bin/bash
+#!/bin/bash -eu
+
+# Set variables
+DOCKER_IMAGE_NAME=twitter-followee-list
+DOCKER_BUILD_CONTAINER_NAME=twitter-followee-list-build
+AWS_ACCOUNT_ID=678084882233
+AWS_REGION=ap-northeast-1
 
 # Build container for musl build
-docker compose build -f docker-compose.build.yml
-docker compose run -f docker-compose.build.yml --rm twitter-followee-list-build
+docker-compose -f docker-compose.build.yml build
+docker-compose -f docker-compose.build.yml run --rm $DOCKER_BUILD_CONTAINER_NAME
 
 # Build main container
-docker compose build -f docker-compose.yml
+docker-compose -f docker-compose.yml build
 
 # Push
-aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com
-docker tag twitter-followee-list:latest 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com/twitter-followee-list:latest
-docker push 678084882233.dkr.ecr.ap-northeast-1.amazonaws.com/twitter-followee-list:latest
+aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+docker tag $DOCKER_IMAGE_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_IMAGE_NAME:latest
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$DOCKER_IMAGE_NAME:latest
