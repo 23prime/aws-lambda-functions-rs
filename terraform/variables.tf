@@ -40,6 +40,14 @@ variable "twitter_list_id" {
   type = string
 }
 
+variable "twitter_source_vtubers_lists" {
+  type = string
+}
+
+variable "twitter_target_vtubers_list" {
+  type = string
+}
+
 variable "twitter_access_token" {
   type = string
 }

@@ -4,6 +4,7 @@ variable "cost_tag" {
 
 variable "lambda_function" {
   type = object({
-    twitter-followee-list = any
+    twitter-followee-list       = any
+    twitter-merge-vtubers-lists = any
   })
 }

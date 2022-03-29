@@ -44,7 +44,7 @@ $ terraform plan
 リソース作成
 
 ```console
-$ terraform destroy
+$ terraform apply
 ```
 
 リソース削除
