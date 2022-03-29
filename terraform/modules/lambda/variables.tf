@@ -7,6 +7,7 @@ variable "ecr_repo" {
     notification-by-gokabot = any
     notification-to-msteams = any
     twitter-followee-list   = any
+    twitter-merge-lists     = any
   })
 }
 
@@ -41,6 +42,14 @@ variable "twitter_list_id" {
   type = string
 }
 
+variable "twitter_source_vtubers_lists" {
+  type = string
+}
+
+variable "twitter_target_vtubers_list" {
+  type = string
+}
+
 variable "twitter_access_token" {
   type = string
 }
@@ -59,6 +68,7 @@ variable "twitter_consumer_secret" {
 
 variable "event_rules" {
   type = object({
-    twitter-followee-list-schedule = any
+    twitter-followee-list-schedule       = any
+    twitter-merge-vtubers-lists-schedule = any
   })
 }

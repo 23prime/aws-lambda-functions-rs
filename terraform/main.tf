@@ -37,6 +37,7 @@ module "lambda" {
     notification-by-gokabot = module.ecr.notification-by-gokabot-repo
     notification-to-msteams = module.ecr.notification-to-msteams-repo
     twitter-followee-list   = module.ecr.twitter-followee-list-repo
+    twitter-merge-lists     = module.ecr.twitter-merge-lists-repo
   }
   line_channel_token = var.line_channel_token
   my_user_id         = var.my_user_id
@@ -45,14 +46,17 @@ module "lambda" {
     notification-by-gokabot = module.sns.notification-by-gokabot-topic
     notification-to-msteams = module.sns.notification-to-msteams-topic
   }
-  twitter_user_id             = var.twitter_user_id
-  twitter_list_id             = var.twitter_list_id
-  twitter_access_token        = var.twitter_access_token
-  twitter_access_token_secret = var.twitter_access_token_secret
-  twitter_consumer_key        = var.twitter_consumer_key
-  twitter_consumer_secret     = var.twitter_consumer_secret
+  twitter_user_id              = var.twitter_user_id
+  twitter_list_id              = var.twitter_list_id
+  twitter_source_vtubers_lists = var.twitter_source_vtubers_lists
+  twitter_target_vtubers_list  = var.twitter_target_vtubers_list
+  twitter_access_token         = var.twitter_access_token
+  twitter_access_token_secret  = var.twitter_access_token_secret
+  twitter_consumer_key         = var.twitter_consumer_key
+  twitter_consumer_secret      = var.twitter_consumer_secret
   event_rules = {
-    twitter-followee-list-schedule = module.events.twitter-followee-list-schedule
+    twitter-followee-list-schedule       = module.events.twitter-followee-list-schedule
+    twitter-merge-vtubers-lists-schedule = module.events.twitter-merge-vtubers-lists-schedule
   }
 }
 
@@ -70,6 +74,7 @@ module "events" {
   source   = "./modules/events"
   cost_tag = var.cost_tag
   lambda_function = {
-    twitter-followee-list = module.lambda.twitter-followee-list
+    twitter-followee-list       = module.lambda.twitter-followee-list
+    twitter-merge-vtubers-lists = module.lambda.twitter-merge-vtubers-lists
   }
 }

@@ -9,3 +9,7 @@ output "notification-to-msteams-repo" {
 output "twitter-followee-list-repo" {
   value = aws_ecr_repository.twitter-followee-list
 }
+
+output "twitter-merge-lists-repo" {
+  value = aws_ecr_repository.twitter-merge-lists
+}
