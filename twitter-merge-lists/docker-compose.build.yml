@@ -1,0 +1,13 @@
+version: "2.1"
+
+services:
+  twitter-merge-lists-build:
+    image: twitter-merge-lists-build
+    container_name: twitter-merge-lists-build
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    volumes:
+      - ./:/code
+      - ~/.cargo/registry:/root/.cargo/registry
+      - ~/.cargo/git:/root/.cargo/git

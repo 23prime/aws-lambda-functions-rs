@@ -1,0 +1,9 @@
+version: "2.1"
+
+services:
+  twitter-merge-lists:
+    image: twitter-merge-lists
+    container_name: twitter-merge-lists
+    build:
+      context: .
+      dockerfile: Dockerfile

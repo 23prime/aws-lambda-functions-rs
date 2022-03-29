@@ -1,0 +1,22 @@
+[package]
+name = "twitter-merge-lists"
+version = "0.1.0"
+authors = ["23prime <23.prime.37@gmail.com>"]
+edition = "2018"
+
+[[bin]]
+name = "twitter-merge-lists"
+path = "src/lambda_handler.rs"
+
+[[bin]]
+name = "local"
+path = "src/local.rs"
+
+[dependencies]
+dotenv = "0.15.0"
+egg-mode = "0.16.0"
+lambda_runtime = "0.4.1"
+log = "0.4.14"
+log4rs = "1.0.0"
+serde = "1.0.130"
+tokio = { version = "1.14.0", features = ["full"] }
