@@ -1,0 +1,20 @@
+# Docker
+Dockerfile*
+.dockerignore
+docker-compose*
+
+# Git
+.git
+.gitignore
+
+# Rust
+target
+rustfmt.toml
+
+# Env
+.env*
+
+# Othres
+build.sh
+.vscode
+README.md
