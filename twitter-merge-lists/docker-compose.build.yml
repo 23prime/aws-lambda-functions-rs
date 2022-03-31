@@ -8,6 +8,8 @@ services:
       context: .
       dockerfile: Dockerfile.build
     volumes:
-      - ./:/code
-      - ~/.cargo/registry:/root/.cargo/registry
-      - ~/.cargo/git:/root/.cargo/git
+      - ./docker-build-target:/app/target
+      - cargo-cache:/usr/local/cargo/registry
+
+volumes:
+  cargo-cache:

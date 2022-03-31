@@ -6,10 +6,13 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
 ENV PATH $PATH:/root/.cargo/bin
 RUN rustup install stable
 
-VOLUME /code
-VOLUME /root/.cargo/registry
-VOLUME /root/.cargo/git
+WORKDIR /app
 
-WORKDIR /code
+COPY Cargo.toml Cargo.lock ./
+RUN mkdir src && echo "fn main() {}" > src/lambda_handler.rs && echo "fn main() {}" > src/local.rs
+RUN cargo build --release
 
-ENTRYPOINT ["cargo", "build", "--release"]
+COPY . .
+RUN cargo build --release
+
+ENTRYPOINT ["echo", "Done"]

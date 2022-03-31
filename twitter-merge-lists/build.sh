@@ -11,7 +11,7 @@ docker-compose -f docker-compose.build.yml build
 docker-compose -f docker-compose.build.yml run --rm $DOCKER_BUILD_CONTAINER_NAME
 
 # Build main container
-docker-compose -f docker-compose.yml build
+docker-compose build
 
 # Push
 aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
