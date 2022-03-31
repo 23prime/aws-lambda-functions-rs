@@ -4,13 +4,16 @@ use std::env;
 
 use dotenv::dotenv;
 use egg_mode::list::ListID;
-use egg_mode::{list, user, KeyPair, Token};
+use egg_mode::{list, KeyPair, Token};
 
 type BoxError = Box<dyn std::error::Error>;
 
 pub mod error;
 pub mod event;
 pub mod logger;
+pub mod user;
+
+use user::User;
 
 // See Twitter API Reference Standard v1.1:
 // https://developer.twitter.com/en/docs/twitter-api/v1
@@ -45,22 +48,26 @@ pub async fn run() -> Result<(), BoxError> {
     let deficiency = (&source_list_members - &target_list_members)
         .into_iter()
         .collect::<Vec<_>>();
-    info!(
-        "Get {} deficiency: {:?}",
-        deficiency.len(),
-        get_user_names(&deficiency, &token).await
-    );
+    info!("Get {} deficiency", deficiency.len());
 
     for partial_deficiency in split_vec(deficiency, EACH_API_CALL_LIMIT_SIZE) {
-        let add_result =
-            list::add_member_list(partial_deficiency.clone(), target_list_id.clone(), &token).await;
+        let partial_deficiency_ids = partial_deficiency
+            .clone()
+            .into_iter()
+            .map(|pd| pd.id)
+            .collect::<Vec<_>>();
+        let add_result = list::add_member_list(
+            partial_deficiency_ids.clone(),
+            target_list_id.clone(),
+            &token,
+        )
+        .await;
         info!(
             "Adding result: {:?} => {:?}",
             partial_deficiency, add_result
         );
     }
 
-    info!("Done!");
     return Ok(());
 }
 
@@ -117,12 +124,12 @@ async fn get_source_list_members(
     list_ids: &[ListID],
     token: &Token,
     page_size: i32,
-) -> Result<HashSet<u64>, BoxError> {
+) -> Result<HashSet<User>, BoxError> {
     let mut result = HashSet::new();
 
     for list_id in list_ids {
         let list_members = get_list_members(list_id, token, page_size).await?;
-        result.extend(&list_members);
+        result.extend(list_members);
     }
 
     return Ok(result);
@@ -132,29 +139,11 @@ async fn get_list_members(
     list_id: &ListID,
     token: &Token,
     page_size: i32,
-) -> Result<HashSet<u64>, BoxError> {
+) -> Result<HashSet<User>, BoxError> {
     let cursor = list::members(list_id.clone(), token).with_page_size(page_size);
-    return Ok(cursor
-        .call()
-        .await?
-        .response
-        .users
+    let twitter_users = cursor.call().await?.response.users;
+    return Ok(twitter_users
         .into_iter()
-        .map(|u| u.id)
+        .map(User::from_twitter_user)
         .collect());
-}
-
-async fn get_user_names(ids: &[u64], token: &Token) -> Result<Vec<String>, BoxError> {
-    let mut result = vec![];
-
-    for id in ids {
-        let name = get_user_name(*id, token).await?;
-        result.push(name);
-    }
-
-    return Ok(result);
-}
-
-async fn get_user_name(id: u64, token: &Token) -> Result<String, BoxError> {
-    return Ok(user::show(id, token).await?.response.name);
 }
