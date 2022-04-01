@@ -23,8 +23,8 @@ async fn handler(
     let result = run().await;
     info!("result: {:?}", result);
 
-    match result {
-        Ok(r) => return Ok(r),
-        Err(e) => return Err(error::LambdaGeneralError::new(e.to_string())),
-    }
+    return match result {
+        Ok(r) => Ok(r),
+        Err(e) => Err(error::LambdaGeneralError::new(e.to_string())),
+    };
 }
