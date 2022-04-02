@@ -21,7 +21,7 @@ impl User {
 
 impl PartialEq for User {
     fn eq(&self, other: &Self) -> bool {
-        self.id == other.id
+        return self.id == other.id;
     }
 }
 
