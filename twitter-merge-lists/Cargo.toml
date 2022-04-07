@@ -8,10 +8,6 @@ edition = "2018"
 name = "twitter-merge-lists"
 path = "src/lambda_handler.rs"
 
-[[bin]]
-name = "local"
-path = "src/local.rs"
-
 [dependencies]
 dotenv = "0.15.0"
 egg-mode = "0.16.0"
