@@ -115,7 +115,6 @@ resource "aws_lambda_function" "twitter-merge-vtubers-lists" {
 
   environment {
     variables = {
-      USER_ID             = var.twitter_user_id
       SOURCE_LISTS        = var.twitter_source_vtubers_lists
       TARGET_LIST         = var.twitter_target_vtubers_list
       ACCESS_TOKEN        = var.twitter_access_token

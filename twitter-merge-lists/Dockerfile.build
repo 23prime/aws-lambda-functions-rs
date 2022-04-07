@@ -9,7 +9,7 @@ RUN rustup install stable
 WORKDIR /app
 
 COPY Cargo.toml Cargo.lock ./
-RUN mkdir src && echo "fn main() {}" > src/lambda_handler.rs && echo "fn main() {}" > src/local.rs
+RUN mkdir src && echo "fn main() {}" > src/lambda_handler.rs
 RUN cargo build --release
 
 COPY . .
