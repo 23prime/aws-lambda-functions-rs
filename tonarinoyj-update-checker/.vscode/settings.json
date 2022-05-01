@@ -10,5 +10,5 @@
     "rust-analyzer.checkOnSave.extraArgs": ["--", "-A", "clippy::needless_return"],
 
     // Spel checker
-    "cSpell.words": ["reqwest", "tonarinoyj"]
+    "cSpell.words": ["reqwest", "roxmltree", "tonarinoyj"]
 }
