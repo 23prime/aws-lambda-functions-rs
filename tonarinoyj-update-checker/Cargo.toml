@@ -17,4 +17,8 @@ log4rs = "1.1.1"
 reqwest = "0.11.10"
 roxmltree = "0.14.1"
 serde = "1.0.136"
+sqlx = { version = "0.5.13", features = [
+  "runtime-tokio-native-tls",
+  "postgres",
+] }
 tokio = { version = "1.18.0", features = ["full"] }
