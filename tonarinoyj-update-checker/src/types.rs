@@ -23,6 +23,10 @@ impl Feed {
             entries: Entry::parse_entries(node),
         };
     }
+
+    pub fn latest_entry(self) -> Entry {
+        return self.entries.into_iter().max_by(|x, y| x.updated.cmp(&y.updated)).unwrap()
+    }
 }
 
 #[derive(Debug)]

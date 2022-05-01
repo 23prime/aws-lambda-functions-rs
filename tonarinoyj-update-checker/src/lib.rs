@@ -23,7 +23,7 @@ pub async fn run() -> Result<(), BoxError> {
     let feed = Feed::parse(node);
     info!("{:?}", feed);
 
-    let latest_entry = feed.entries.into_iter().max_by(|x, y| x.updated.cmp(&y.updated)).unwrap();
+    let latest_entry = feed.latest_entry();
     info!("Latest Entry: {:?}", latest_entry);
 
     return Ok(());
