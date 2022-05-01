@@ -1,0 +1,18 @@
+[package]
+name = "tonarinoyj-update-checker"
+version = "0.1.0"
+authors = ["23prime <23.prime.37@gmail.com>"]
+edition = "2018"
+
+[[bin]]
+name = "tonarinoyj-update-checker"
+path = "src/lambda_handler.rs"
+
+[dependencies]
+dotenv = "0.15.0"
+lambda_runtime = "0.5.1"
+log = "0.4.16"
+log4rs = "1.1.1"
+reqwest = "0.11.10"
+serde = "1.0.136"
+tokio = { version = "1.18.0", features = ["full"] }

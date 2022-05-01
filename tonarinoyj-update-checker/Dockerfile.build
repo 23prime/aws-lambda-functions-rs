@@ -1,0 +1,18 @@
+FROM public.ecr.aws/lambda/provided:al2
+
+RUN yum install -y gcc openssl-devel
+
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
+ENV PATH $PATH:/root/.cargo/bin
+RUN rustup install stable
+
+WORKDIR /app
+
+COPY Cargo.toml Cargo.lock ./
+RUN mkdir src && echo "fn main() {}" > src/lambda_handler.rs
+RUN cargo build --release
+
+COPY . .
+RUN cargo build --release
+
+ENTRYPOINT ["echo", "Done"]

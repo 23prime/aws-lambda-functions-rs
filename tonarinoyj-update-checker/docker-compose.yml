@@ -1,0 +1,13 @@
+version: "2.1"
+
+services:
+  tonarinoyj-update-checker:
+    image: tonarinoyj-update-checker
+    container_name: tonarinoyj-update-checker
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - 9000:8080
