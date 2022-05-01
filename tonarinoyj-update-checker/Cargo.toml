@@ -9,6 +9,7 @@ name = "tonarinoyj-update-checker"
 path = "src/lambda_handler.rs"
 
 [dependencies]
+chrono = "0.4.19"
 dotenv = "0.15.0"
 lambda_runtime = "0.5.1"
 log = "0.4.16"

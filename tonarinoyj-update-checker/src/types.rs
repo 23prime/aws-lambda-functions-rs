@@ -1,3 +1,4 @@
+use chrono::{DateTime, FixedOffset, TimeZone};
 use log::error;
 use roxmltree::Node;
 
@@ -5,7 +6,7 @@ use roxmltree::Node;
 pub struct Feed {
     pub title: String,
     pub subtitle: String,
-    pub updated: String,
+    pub updated: DateTime<FixedOffset>,
     pub id: String,
     pub link: String,
     pub entries: Vec<Entry>,
@@ -16,7 +17,7 @@ impl Feed {
         return Self {
             title: get_child_text(node, "title"),
             subtitle: get_child_text(node, "subtitle"),
-            updated: get_child_text(node, "updated"),
+            updated: parse_datetime(&get_child_text(node, "updated")),
             id: get_child_text(node, "id"),
             link: get_child_attribute(node, "link", "href"),
             entries: Entry::parse_entries(node),
@@ -29,7 +30,7 @@ pub struct Entry {
     pub title: String,
     pub link: String,
     pub id: String,
-    pub updated: String,
+    pub updated: DateTime<FixedOffset>,
     pub free_term_start_date: String,
     pub content: String,
     pub thumbnail_link: String,
@@ -50,7 +51,7 @@ impl Entry {
             title: get_child_text(node, "title"),
             link: get_child_attribute(node, "link", "href"),
             id: get_child_text(node, "id"),
-            updated: get_child_text(node, "updated"),
+            updated: parse_datetime(&get_child_text(node, "updated")),
             free_term_start_date: get_child_text(node, "freeTermStartDate"),
             content: get_child_text(node, "content"),
             thumbnail_link: "".to_string(), // TODO: implement
@@ -115,4 +116,14 @@ fn get_child_attribute(node: Node, tag_name: &str, attribute: &str) -> String {
     }
 
     return child.unwrap().attribute(attribute).unwrap().to_string();
+}
+
+fn parse_datetime(s: &str) -> DateTime<FixedOffset> {
+    let result = DateTime::parse_from_rfc3339(s);
+
+    if let Ok(datetime) = result {
+        return datetime;
+    }
+
+    return FixedOffset::east(0).ymd(1970, 1, 1).and_hms(0, 0, 0);
 }

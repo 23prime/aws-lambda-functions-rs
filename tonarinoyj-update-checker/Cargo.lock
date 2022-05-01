@@ -1198,6 +1198,7 @@ dependencies = [
 name = "tonarinoyj-update-checker"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "dotenv",
  "lambda_runtime",
  "log",
