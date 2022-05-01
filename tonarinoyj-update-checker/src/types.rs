@@ -1,3 +1,6 @@
+use log::error;
+use roxmltree::Node;
+
 #[derive(Debug)]
 pub struct Feed {
     pub title: String,
@@ -6,6 +9,19 @@ pub struct Feed {
     pub id: String,
     pub link: String,
     pub entries: Vec<Entry>,
+}
+
+impl Feed {
+    pub fn parse(node: Node) -> Self {
+        return Self {
+            title: get_child_text(node, "title"),
+            subtitle: get_child_text(node, "subtitle"),
+            updated: get_child_text(node, "updated"),
+            id: get_child_text(node, "id"),
+            link: get_child_attribute(node, "link", "href"),
+            entries: Entry::parse_entries(node),
+        };
+    }
 }
 
 #[derive(Debug)]
@@ -20,7 +36,83 @@ pub struct Entry {
     pub author: Author,
 }
 
+impl Entry {
+    pub fn parse_entries(node: Node) -> Vec<Self> {
+        return node
+            .children()
+            .filter(|&n| n.tag_name().name() == "entry")
+            .map(Self::parse)
+            .collect::<Vec<_>>();
+    }
+
+    fn parse(node: Node) -> Self {
+        return Self {
+            title: get_child_text(node, "title"),
+            link: get_child_attribute(node, "link", "href"),
+            id: get_child_text(node, "id"),
+            updated: get_child_text(node, "updated"),
+            free_term_start_date: get_child_text(node, "freeTermStartDate"),
+            content: get_child_text(node, "content"),
+            thumbnail_link: "".to_string(), // TODO: implement
+            author: Author::parse(node),
+        };
+    }
+}
+
 #[derive(Debug)]
 pub struct Author {
     pub name: String,
+}
+
+impl Author {
+    pub fn parse(node: Node) -> Self {
+        let author = find_child(node, "author");
+
+        if author.is_none() {
+            return Self {
+                name: "".to_string(),
+            };
+        }
+
+        return Self {
+            name: get_child_text(author.unwrap(), "name"),
+        };
+    }
+}
+
+fn find_child<'a>(node: Node<'a, 'a>, tag_name: &'a str) -> Option<Node<'a, 'a>> {
+    let result = node.children().find(|&n| n.tag_name().name() == tag_name);
+
+    if result.is_none() {
+        error!("The tag name [{:?}] is not found in {:?}", tag_name, node);
+    }
+
+    return result;
+}
+
+fn get_child_text(node: Node, tag_name: &str) -> String {
+    let child = find_child(node, tag_name);
+
+    if child.is_none() {
+        return "".to_string();
+    }
+
+    return child
+        .unwrap()
+        .children()
+        .next()
+        .unwrap()
+        .text()
+        .unwrap()
+        .to_string();
+}
+
+fn get_child_attribute(node: Node, tag_name: &str, attribute: &str) -> String {
+    let child = find_child(node, tag_name);
+
+    if child.is_none() {
+        return "".to_string();
+    }
+
+    return child.unwrap().attribute(attribute).unwrap().to_string();
 }
