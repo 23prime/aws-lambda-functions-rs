@@ -2,6 +2,25 @@
 
 Check update a content of [となりのヤングジャンプ](https://tonarinoyj.jp/).
 
+## Migration ##
+
+### Install sqlx-cli ###
+
+TODO: Use in Docker.
+
+```console
+$ cargo install --version=0.5.13 sqlx-cli --no-default-features --features native-tls,postgres
+```
+
+### Migration commands ###
+
+```console
+$ export DATABASE_URL=...
+$ sqlx migrate add create_latest_entries
+$ sqlx migrate info --source migrations
+$ sqlx migrate run
+```
+
 ## Build ##
 
 ```console
