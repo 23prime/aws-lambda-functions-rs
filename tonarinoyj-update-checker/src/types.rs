@@ -2,7 +2,7 @@ use chrono::{DateTime, FixedOffset, TimeZone};
 use log::error;
 use roxmltree::Node;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Feed {
     pub title: String,
     pub subtitle: String,
@@ -29,7 +29,7 @@ impl Feed {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Entry {
     pub title: String,
     pub link: String,
@@ -64,7 +64,7 @@ impl Entry {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Author {
     pub name: String,
 }
