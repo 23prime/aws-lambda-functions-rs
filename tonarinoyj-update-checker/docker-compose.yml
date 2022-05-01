@@ -11,3 +11,17 @@ services:
       - .env
     ports:
       - 9000:8080
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:11.12
+    environment:
+      POSTGRES_DB: general_dev_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./tmp/pgdata:/var/lib/postgresql/data
+      - ./docker-entrypoint-initdb.d/postgres/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
