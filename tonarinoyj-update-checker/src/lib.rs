@@ -22,9 +22,10 @@ pub async fn run() -> Result<(), BoxError> {
     let atom = Atom::parse(document);
     info!("Parse Atom: {:?}", atom);
 
-    let entry = atom.feed.clone().latest_entry();
+    let feed = atom.feed.clone();
+    let entry = feed.clone().latest_entry();
     info!("Latest Entry: {:?}", entry);
-    let latest_entry = LatestEntry::new(atom.feed.id, atom.feed.title, entry.id);
+    let latest_entry = LatestEntry::new(feed.id, feed.title, entry.id);
 
     let db_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let mut conn = PgConnection::connect(&db_url).await?;
@@ -32,7 +33,10 @@ pub async fn run() -> Result<(), BoxError> {
     let upsert_result = latest_entry.upsert(&mut conn).await?;
     info!("Upsert result: {:?}", upsert_result);
 
-    let message = "hello".to_string();
+    let message = format!(
+        "The new episode of {} has been released!\n\n{}\n{}",
+        atom.feed.title, entry.title, entry.link
+    );
     line::send(message).await?;
 
     return Ok(());
