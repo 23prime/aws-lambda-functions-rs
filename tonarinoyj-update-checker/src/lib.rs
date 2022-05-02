@@ -13,6 +13,7 @@ type BoxError = Box<dyn std::error::Error>;
 pub mod atom;
 pub mod error;
 pub mod event;
+pub mod line;
 pub mod logger;
 pub mod models;
 
@@ -33,6 +34,9 @@ pub async fn run() -> Result<(), BoxError> {
 
     let upsert_result = latest_entry.upsert(&mut conn).await?;
     info!("Upsert result: {:?}", upsert_result);
+
+    let message = "hello".to_string();
+    line::send(message).await?;
 
     return Ok(());
 }
