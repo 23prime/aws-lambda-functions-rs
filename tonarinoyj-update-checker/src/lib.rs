@@ -5,36 +5,34 @@ use log::{error, info};
 use roxmltree::Document;
 use sqlx::{Connection, PgConnection};
 
+use atom::Atom;
 use models::LatestEntry;
-use types::Feed;
 
 type BoxError = Box<dyn std::error::Error>;
 
+pub mod atom;
 pub mod error;
 pub mod event;
 pub mod logger;
 pub mod models;
-pub mod types;
 
 pub async fn run() -> Result<(), BoxError> {
     dotenv().ok();
 
     let series = fetch_series().await?;
     let document = Document::parse(&series)?;
-    let node = document.root_element();
+    let atom = Atom::parse(document);
+    info!("Parse Atom: {:?}", atom);
 
-    let feed = Feed::parse(node);
-    info!("{:?}", feed);
-
-    let entry = feed.clone().latest_entry();
+    let entry = atom.feed.clone().latest_entry();
     info!("Latest Entry: {:?}", entry);
-    let latest_entry = LatestEntry::new(feed.id, feed.title, entry.id);
+    let latest_entry = LatestEntry::new(atom.feed.id, atom.feed.title, entry.id);
 
     let db_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let mut conn = PgConnection::connect(&db_url).await?;
 
     let upsert_result = latest_entry.upsert(&mut conn).await?;
-    info!("{:?}", upsert_result);
+    info!("Upsert result: {:?}", upsert_result);
 
     return Ok(());
 }

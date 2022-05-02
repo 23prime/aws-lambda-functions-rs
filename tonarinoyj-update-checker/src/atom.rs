@@ -1,6 +1,19 @@
 use chrono::{DateTime, FixedOffset, TimeZone};
 use log::error;
-use roxmltree::Node;
+use roxmltree::{Document, Node};
+
+#[derive(Debug, Clone)]
+pub struct Atom {
+    pub feed: Feed,
+}
+
+impl Atom {
+    pub fn parse(document: Document) -> Self {
+        return Atom {
+            feed: Feed::parse(document.root_element()),
+        };
+    }
+}
 
 #[derive(Debug, Clone)]
 pub struct Feed {
