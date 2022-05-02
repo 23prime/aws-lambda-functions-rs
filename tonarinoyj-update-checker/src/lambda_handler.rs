@@ -6,6 +6,7 @@ use tonarinoyj_update_checker::{error, logger, run};
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
+    dotenv::dotenv().ok();
     logger::init();
 
     info!("######## START ########");

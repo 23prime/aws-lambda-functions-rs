@@ -1,6 +1,5 @@
 use std::env;
 
-use dotenv::dotenv;
 use log::{error, info};
 use roxmltree::Document;
 use sqlx::{Connection, PgConnection};
@@ -18,8 +17,6 @@ pub mod logger;
 pub mod models;
 
 pub async fn run() -> Result<(), BoxError> {
-    dotenv().ok();
-
     let series = fetch_series().await?;
     let document = Document::parse(&series)?;
     let atom = Atom::parse(document);
