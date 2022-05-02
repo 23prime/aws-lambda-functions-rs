@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
-use sqlx::{PgConnection, Row};
+use sqlx::PgConnection;
 
 #[derive(Debug, Serialize, Deserialize, FromRow)]
 pub struct LatestEntry {
@@ -18,30 +18,22 @@ impl LatestEntry {
         };
     }
 
-    pub async fn upsert(&self, conn: &mut PgConnection) -> Result<Vec<Self>, sqlx::Error> {
-        if Self::series_exists(self, conn).await? {
-            return Self::update(self, conn).await;
-        } else {
-            return Self::create(self, conn).await;
-        }
-    }
-
-    async fn series_exists(&self, conn: &mut PgConnection) -> Result<bool, sqlx::Error> {
-        let count: i64 = sqlx::query(
+    pub async fn select_by_series_id(
+        conn: &mut PgConnection,
+        series_id: &str,
+    ) -> Result<Option<Self>, sqlx::Error> {
+        return sqlx::query_as::<_, Self>(
             "
-            SELECT COUNT(*)
+            SELECT *
             FROM tonarinoyj_update_checker.latest_entries
             WHERE series_id = $1",
         )
-        .bind(&self.series_id)
-        .fetch_one(conn)
-        .await?
-        .get("count");
-
-        return Ok(count > 0);
+        .bind(series_id)
+        .fetch_optional(conn)
+        .await;
     }
 
-    async fn update(&self, conn: &mut PgConnection) -> Result<Vec<Self>, sqlx::Error> {
+    pub async fn update(&self, conn: &mut PgConnection) -> Result<Vec<Self>, sqlx::Error> {
         return sqlx::query_as::<_, Self>(
             "
             UPDATE tonarinoyj_update_checker.latest_entries
@@ -54,7 +46,7 @@ impl LatestEntry {
         .await;
     }
 
-    async fn create(&self, conn: &mut PgConnection) -> Result<Vec<Self>, sqlx::Error> {
+    pub async fn create(&self, conn: &mut PgConnection) -> Result<Vec<Self>, sqlx::Error> {
         return sqlx::query_as::<_, Self>(
             "
             INSERT INTO tonarinoyj_update_checker.latest_entries (series_id, series_name, entry_id)

@@ -23,19 +23,32 @@ pub async fn run() -> Result<(), BoxError> {
     info!("Parse Atom: {:?}", atom);
 
     let feed = atom.feed.clone();
-    let entry = feed.clone().latest_entry();
-    info!("Latest Entry: {:?}", entry);
-    let latest_entry = LatestEntry::new(feed.id, feed.title, entry.id);
+    let fetched_latest_entry = feed.clone().latest_entry();
+    info!("Fetched latest entry: {:?}", fetched_latest_entry);
 
     let db_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let mut conn = PgConnection::connect(&db_url).await?;
 
-    let upsert_result = latest_entry.upsert(&mut conn).await?;
-    info!("Upsert result: {:?}", upsert_result);
+    let recorded_latest_entry = LatestEntry::select_by_series_id(&mut conn, &feed.id).await?;
+    info!("Recorded latest entry: {:?}", recorded_latest_entry);
+    let latest_entry = LatestEntry::new(feed.id, feed.title, fetched_latest_entry.clone().id);
+
+    if recorded_latest_entry.is_none() {
+        latest_entry.create(&mut conn).await?;
+        info!("Create latest entry.");
+        return Ok(());
+    }
+
+    if fetched_latest_entry.id == recorded_latest_entry.unwrap().entry_id {
+        info!("Not updated: latest entry ID: {}", fetched_latest_entry.id);
+        return Ok(());
+    }
+
+    latest_entry.update(&mut conn).await?;
 
     let message = format!(
         "The new episode of {} has been released!\n\n{}\n{}",
-        atom.feed.title, entry.title, entry.link
+        atom.feed.title, fetched_latest_entry.title, fetched_latest_entry.link
     );
     line::send(message).await?;
 
