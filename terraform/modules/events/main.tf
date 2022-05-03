@@ -37,7 +37,7 @@ resource "aws_cloudwatch_event_rule" "one-punch-man-update-checker-schedule" {
   name        = "one-punch-man-update-checker-schedule"
   description = "Scheduled event for Lambda function: one-punch-man-update-checker"
 
-  schedule_expression = "cron(0 * * * ? *)"
+  schedule_expression = "cron(0 23 * * ? *)"
 
   tags = {
     Name = "one-punch-man-update-checker-schedule"
