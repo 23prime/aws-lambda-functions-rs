@@ -92,7 +92,6 @@ resource "aws_lambda_function" "twitter-followee-list" {
   }
 }
 
-
 resource "aws_lambda_permission" "twitter-followee-list-with-event" {
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
@@ -130,11 +129,45 @@ resource "aws_lambda_function" "twitter-merge-vtubers-lists" {
   }
 }
 
-
 resource "aws_lambda_permission" "twitter-merge-vtubers-lists-with-event" {
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.twitter-merge-vtubers-lists.function_name
   principal     = "events.amazonaws.com"
   source_arn    = var.event_rules.twitter-merge-vtubers-lists-schedule.arn
+}
+
+resource "aws_lambda_function" "one-punch-man-update-checker" {
+  function_name = "one-punch-man-update-checker"
+
+  role         = var.lambda_execution_role.arn
+  package_type = "Image"
+  image_uri    = "${var.ecr_repo.tonarinoyj-update-checker.repository_url}:latest"
+  timeout      = 300
+
+  lifecycle {
+    ignore_changes = [image_uri]
+  }
+
+  environment {
+    variables = {
+      TYJ_SERIES_ID      = var.one_punch_man_series_id
+      DATABASE_URL       = var.tonarinoyj_update_checker_db_url
+      LINE_CHANNEL_TOKEN = var.line_channel_token
+      TARGET_ID          = var.nga_group_id
+    }
+  }
+
+  tags = {
+    Name = "one-punch-man-update-checker"
+    cost = var.cost_tag
+  }
+}
+
+resource "aws_lambda_permission" "one-punch-man-update-checker-with-event" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.one-punch-man-update-checker.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = var.event_rules.one-punch-man-update-checker-schedule.arn
 }

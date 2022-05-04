@@ -4,10 +4,11 @@ variable "cost_tag" {
 
 variable "ecr_repo" {
   type = object({
-    notification-by-gokabot = any
-    notification-to-msteams = any
-    twitter-followee-list   = any
-    twitter-merge-lists     = any
+    notification-by-gokabot   = any
+    notification-to-msteams   = any
+    twitter-followee-list     = any
+    twitter-merge-lists       = any
+    tonarinoyj-update-checker = any
   })
 }
 
@@ -16,6 +17,10 @@ variable "line_channel_token" {
 }
 
 variable "my_user_id" {
+  type = string
+}
+
+variable "nga_group_id" {
   type = string
 }
 
@@ -66,9 +71,18 @@ variable "twitter_consumer_secret" {
   type = string
 }
 
+variable "one_punch_man_series_id" {
+  type = string
+}
+
+variable "tonarinoyj_update_checker_db_url" {
+  type = string
+}
+
 variable "event_rules" {
   type = object({
-    twitter-followee-list-schedule       = any
-    twitter-merge-vtubers-lists-schedule = any
+    twitter-followee-list-schedule        = any
+    twitter-merge-vtubers-lists-schedule  = any
+    one-punch-man-update-checker-schedule = any
   })
 }

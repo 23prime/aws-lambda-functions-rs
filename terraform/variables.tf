@@ -28,6 +28,10 @@ variable "my_user_id" {
   type = string
 }
 
+variable "nga_group_id" {
+  type = string
+}
+
 variable "webhook_url" {
   type = string
 }
@@ -61,5 +65,13 @@ variable "twitter_consumer_key" {
 }
 
 variable "twitter_consumer_secret" {
+  type = string
+}
+
+variable "one_punch_man_series_id" {
+  type = string
+}
+
+variable "tonarinoyj_update_checker_db_url" {
   type = string
 }

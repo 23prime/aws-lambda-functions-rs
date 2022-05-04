@@ -13,3 +13,7 @@ output "twitter-followee-list-repo" {
 output "twitter-merge-lists-repo" {
   value = aws_ecr_repository.twitter-merge-lists
 }
+
+output "tonarinoyj-update-checker-repo" {
+  value = aws_ecr_repository.tonarinoyj-update-checker
+}
