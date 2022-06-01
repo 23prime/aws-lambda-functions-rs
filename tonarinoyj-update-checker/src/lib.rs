@@ -56,8 +56,8 @@ pub async fn run() -> Result<(), BoxError> {
 }
 
 async fn fetch_series() -> Result<String, BoxError> {
-    let entry_id = env::var("TYJ_SERIES_ID").expect("TYJ_SERIES_ID must be set");
-    let url = format!("https://tonarinoyj.jp/atom/series/{}", entry_id);
+    let series_id = env::var("TYJ_SERIES_ID").expect("TYJ_SERIES_ID must be set");
+    let url = format!("https://tonarinoyj.jp/atom/series/{}", series_id);
     let response = reqwest::get(url).await?;
 
     if !response.status().is_success() {
