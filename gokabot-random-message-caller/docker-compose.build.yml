@@ -1,0 +1,16 @@
+version: "2.1"
+
+services:
+  gokabot-random-message-caller-build:
+    image: gokabot-random-message-caller-build
+    container_name: gokabot-random-message-caller-build
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    volumes:
+      - ./docker-build-target:/app/target
+      - cargo-cache:/usr/local/cargo/registry
+    entrypoint: ["cargo", "build", "--release"]
+
+volumes:
+  cargo-cache:
