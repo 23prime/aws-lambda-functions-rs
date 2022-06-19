@@ -4,11 +4,12 @@ variable "cost_tag" {
 
 variable "ecr_repo" {
   type = object({
-    notification-by-gokabot   = any
-    notification-to-msteams   = any
-    twitter-followee-list     = any
-    twitter-merge-lists       = any
-    tonarinoyj-update-checker = any
+    notification-by-gokabot       = any
+    notification-to-msteams       = any
+    twitter-followee-list         = any
+    twitter-merge-lists           = any
+    tonarinoyj-update-checker     = any
+    gokabot-random-message-caller = any
   })
 }
 
@@ -79,10 +80,15 @@ variable "tonarinoyj_update_checker_db_url" {
   type = string
 }
 
+variable "gokabot_base_uri" {
+  type = string
+}
+
 variable "event_rules" {
   type = object({
-    twitter-followee-list-schedule        = any
-    twitter-merge-vtubers-lists-schedule  = any
-    one-punch-man-update-checker-schedule = any
+    twitter-followee-list-schedule         = any
+    twitter-merge-vtubers-lists-schedule   = any
+    one-punch-man-update-checker-schedule  = any
+    gokabot-random-message-caller-schedule = any
   })
 }

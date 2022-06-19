@@ -17,3 +17,7 @@ output "twitter-merge-lists-repo" {
 output "tonarinoyj-update-checker-repo" {
   value = aws_ecr_repository.tonarinoyj-update-checker
 }
+
+output "gokabot-random-message-caller-repo" {
+  value = aws_ecr_repository.gokabot-random-message-caller
+}

@@ -1,0 +1,13 @@
+version: "2.1"
+
+services:
+  gokabot-random-message-caller:
+    image: gokabot-random-message-caller
+    container_name: gokabot-random-message-caller
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - 9000:8080

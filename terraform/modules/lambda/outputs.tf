@@ -17,3 +17,7 @@ output "twitter-merge-vtubers-lists" {
 output "one-punch-man-update-checker" {
   value = aws_lambda_function.one-punch-man-update-checker
 }
+
+output "gokabot-random-message-caller" {
+  value = aws_lambda_function.gokabot-random-message-caller
+}

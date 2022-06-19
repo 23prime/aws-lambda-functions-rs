@@ -49,3 +49,20 @@ resource "aws_cloudwatch_event_target" "one-punch-man-update-checker-schedule" {
   rule = aws_cloudwatch_event_rule.one-punch-man-update-checker-schedule.name
   arn  = var.lambda_function.one-punch-man-update-checker.arn
 }
+
+resource "aws_cloudwatch_event_rule" "gokabot-random-message-caller-schedule" {
+  name        = "gokabot-random-message-caller-schedule"
+  description = "Scheduled event for Lambda function: gokabot-random-message-caller"
+
+  schedule_expression = "cron(0 3,15 * * ? *)"
+
+  tags = {
+    Name = "gokabot-random-message-caller-schedule"
+    cost = var.cost_tag
+  }
+}
+
+resource "aws_cloudwatch_event_target" "gokabot-random-message-caller-schedule" {
+  rule = aws_cloudwatch_event_rule.gokabot-random-message-caller-schedule.name
+  arn  = var.lambda_function.gokabot-random-message-caller.arn
+}
