@@ -34,11 +34,12 @@ module "lambda" {
   cost_tag              = var.cost_tag
   lambda_execution_role = module.iam.LambdaExecutionRoleWithGokabotSecretAccess
   ecr_repo = {
-    notification-by-gokabot   = module.ecr.notification-by-gokabot-repo
-    notification-to-msteams   = module.ecr.notification-to-msteams-repo
-    twitter-followee-list     = module.ecr.twitter-followee-list-repo
-    twitter-merge-lists       = module.ecr.twitter-merge-lists-repo
-    tonarinoyj-update-checker = module.ecr.tonarinoyj-update-checker-repo
+    notification-by-gokabot       = module.ecr.notification-by-gokabot-repo
+    notification-to-msteams       = module.ecr.notification-to-msteams-repo
+    twitter-followee-list         = module.ecr.twitter-followee-list-repo
+    twitter-merge-lists           = module.ecr.twitter-merge-lists-repo
+    tonarinoyj-update-checker     = module.ecr.tonarinoyj-update-checker-repo
+    gokabot-random-message-caller = module.ecr.gokabot-random-message-caller-repo
   }
   line_channel_token = var.line_channel_token
   my_user_id         = var.my_user_id
@@ -58,10 +59,12 @@ module "lambda" {
   twitter_consumer_secret          = var.twitter_consumer_secret
   one_punch_man_series_id          = var.one_punch_man_series_id
   tonarinoyj_update_checker_db_url = var.tonarinoyj_update_checker_db_url
+  gokabot_base_uri                 = var.gokabot_base_uri
   event_rules = {
-    twitter-followee-list-schedule        = module.events.twitter-followee-list-schedule
-    twitter-merge-vtubers-lists-schedule  = module.events.twitter-merge-vtubers-lists-schedule
-    one-punch-man-update-checker-schedule = module.events.one-punch-man-update-checker-schedule
+    twitter-followee-list-schedule         = module.events.twitter-followee-list-schedule
+    twitter-merge-vtubers-lists-schedule   = module.events.twitter-merge-vtubers-lists-schedule
+    one-punch-man-update-checker-schedule  = module.events.one-punch-man-update-checker-schedule
+    gokabot-random-message-caller-schedule = module.events.gokabot-random-message-caller-schedule
   }
 }
 
@@ -79,8 +82,9 @@ module "events" {
   source   = "./modules/events"
   cost_tag = var.cost_tag
   lambda_function = {
-    twitter-followee-list        = module.lambda.twitter-followee-list
-    twitter-merge-vtubers-lists  = module.lambda.twitter-merge-vtubers-lists
-    one-punch-man-update-checker = module.lambda.one-punch-man-update-checker
+    twitter-followee-list         = module.lambda.twitter-followee-list
+    twitter-merge-vtubers-lists   = module.lambda.twitter-merge-vtubers-lists
+    one-punch-man-update-checker  = module.lambda.one-punch-man-update-checker
+    gokabot-random-message-caller = module.lambda.gokabot-random-message-caller
   }
 }

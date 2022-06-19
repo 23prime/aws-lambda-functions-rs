@@ -171,3 +171,35 @@ resource "aws_lambda_permission" "one-punch-man-update-checker-with-event" {
   principal     = "events.amazonaws.com"
   source_arn    = var.event_rules.one-punch-man-update-checker-schedule.arn
 }
+
+resource "aws_lambda_function" "gokabot-random-message-caller" {
+  function_name = "gokabot-random-message-caller"
+
+  role         = var.lambda_execution_role.arn
+  package_type = "Image"
+  image_uri    = "${var.ecr_repo.gokabot-random-message-caller.repository_url}:latest"
+  timeout      = 300
+
+  lifecycle {
+    ignore_changes = [image_uri]
+  }
+
+  environment {
+    variables = {
+      GOKABOT_BASE_URI = var.gokabot_base_uri
+    }
+  }
+
+  tags = {
+    Name = "gokabot-random-message-caller"
+    cost = var.cost_tag
+  }
+}
+
+resource "aws_lambda_permission" "gokabot-random-message-caller-with-event" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.gokabot-random-message-caller.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = var.event_rules.gokabot-random-message-caller-schedule.arn
+}

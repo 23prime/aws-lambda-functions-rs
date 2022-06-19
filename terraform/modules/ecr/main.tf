@@ -117,3 +117,27 @@ resource "aws_ecr_lifecycle_policy" "tonarinoyj-update-checker-lifecycle-policy"
   repository = aws_ecr_repository.tonarinoyj-update-checker.name
   policy     = file("${path.module}/lifecycle_policy.json")
 }
+
+resource "aws_ecr_repository" "gokabot-random-message-caller" {
+  name = "gokabot-random-message-caller"
+
+  image_tag_mutability = "MUTABLE"
+
+  encryption_configuration {
+    encryption_type = "AES256"
+  }
+
+  image_scanning_configuration {
+    scan_on_push = false
+  }
+
+  tags = {
+    Name = "gokabot-random-message-caller"
+    cost = var.cost_tag
+  }
+}
+
+resource "aws_ecr_lifecycle_policy" "gokabot-random-message-caller-lifecycle-policy" {
+  repository = aws_ecr_repository.gokabot-random-message-caller.name
+  policy     = file("${path.module}/lifecycle_policy.json")
+}

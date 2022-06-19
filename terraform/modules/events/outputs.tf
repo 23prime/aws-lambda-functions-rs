@@ -9,3 +9,7 @@ output "twitter-merge-vtubers-lists-schedule" {
 output "one-punch-man-update-checker-schedule" {
   value = aws_cloudwatch_event_rule.one-punch-man-update-checker-schedule
 }
+
+output "gokabot-random-message-caller-schedule" {
+  value = aws_cloudwatch_event_rule.gokabot-random-message-caller-schedule
+}

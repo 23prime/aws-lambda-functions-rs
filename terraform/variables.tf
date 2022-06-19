@@ -75,3 +75,7 @@ variable "one_punch_man_series_id" {
 variable "tonarinoyj_update_checker_db_url" {
   type = string
 }
+
+variable "gokabot_base_uri" {
+  type = string
+}
