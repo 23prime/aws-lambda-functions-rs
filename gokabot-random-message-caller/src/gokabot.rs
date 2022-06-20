@@ -18,9 +18,9 @@ impl Params {
     }
 }
 
-pub async fn call(target_id: &str) -> Result<Response, reqwest::Error> {
+pub async fn call(target_id: String) -> Result<Response, reqwest::Error> {
     let url = get_url();
-    let params = Params::new(target_id);
+    let params = Params::new(&target_id);
 
     let result = Client::new()
         .post(url)

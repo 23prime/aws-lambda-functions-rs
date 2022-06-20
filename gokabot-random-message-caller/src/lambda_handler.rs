@@ -1,3 +1,5 @@
+use std::env;
+
 use futures::future::join_all;
 use lambda_runtime::{service_fn, Error, LambdaEvent};
 use log::info;
@@ -36,6 +38,11 @@ async fn handler(
     }
 }
 
-fn get_target_ids() -> Vec<&'static str> {
-    return vec!["MY_USER_ID", "NGA_GROUP_ID", "KMT_GROUP_ID"];
+fn get_target_ids() -> Vec<String> {
+    let target_ids_from_env = env::var("TARGET_IDS").expect("TARGET_IDS must be set");
+    info!("target_ids: {:?}", target_ids_from_env);
+    return target_ids_from_env
+        .split(',')
+        .map(|s| s.to_string())
+        .collect();
 }
