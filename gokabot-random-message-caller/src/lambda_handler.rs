@@ -1,3 +1,6 @@
+use std::env;
+
+use futures::future::join_all;
 use lambda_runtime::{service_fn, Error, LambdaEvent};
 use log::info;
 
@@ -21,18 +24,10 @@ async fn handler(
 ) -> Result<(), error::LambdaGeneralError> {
     info!("event: {:?}", event);
 
-    let mut has_error = false;
+    let future_tasks = get_target_ids().into_iter().map(gokabot::call);
+    let result = join_all(future_tasks).await;
 
-    let target_ids = vec!["MY_USER_ID", "NGA_GROUP_ID", "KMT_GROUP_ID"];
-
-    for target_id in target_ids {
-        let result = gokabot::call(target_id).await;
-        info!("Call gokabot API [{}] => {:?}", target_id, result);
-
-        if result.is_err() {
-            has_error = true;
-        }
-    }
+    let has_error = result.into_iter().any(|r| r.is_err());
 
     if has_error {
         return Err(error::LambdaGeneralError::new(
@@ -41,4 +36,13 @@ async fn handler(
     } else {
         return Ok(());
     }
+}
+
+fn get_target_ids() -> Vec<String> {
+    let target_ids_from_env = env::var("TARGET_IDS").expect("TARGET_IDS must be set");
+    info!("target_ids: {:?}", target_ids_from_env);
+    return target_ids_from_env
+        .split(',')
+        .map(|s| s.to_string())
+        .collect();
 }

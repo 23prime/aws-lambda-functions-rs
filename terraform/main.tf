@@ -60,6 +60,7 @@ module "lambda" {
   one_punch_man_series_id          = var.one_punch_man_series_id
   tonarinoyj_update_checker_db_url = var.tonarinoyj_update_checker_db_url
   gokabot_base_uri                 = var.gokabot_base_uri
+  target_ids                       = var.target_ids
   event_rules = {
     twitter-followee-list-schedule         = module.events.twitter-followee-list-schedule
     twitter-merge-vtubers-lists-schedule   = module.events.twitter-merge-vtubers-lists-schedule

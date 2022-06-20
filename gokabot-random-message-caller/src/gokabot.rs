@@ -1,5 +1,6 @@
 use std::env;
 
+use log::info;
 use reqwest::header::CONTENT_TYPE;
 use reqwest::{Client, Response};
 use serde::Serialize;
@@ -17,16 +18,19 @@ impl Params {
     }
 }
 
-pub async fn call(target_id: &str) -> Result<Response, reqwest::Error> {
+pub async fn call(target_id: String) -> Result<Response, reqwest::Error> {
     let url = get_url();
-    let params = Params::new(target_id);
+    let params = Params::new(&target_id);
 
-    return Client::new()
+    let result = Client::new()
         .post(url)
         .header(CONTENT_TYPE, "application/json")
         .json(&params)
         .send()
         .await;
+
+    info!("Call gokabot API [{}] => {:?}", target_id, result);
+    return result;
 }
 
 fn get_url() -> String {

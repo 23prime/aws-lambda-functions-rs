@@ -187,6 +187,7 @@ resource "aws_lambda_function" "gokabot-random-message-caller" {
   environment {
     variables = {
       GOKABOT_BASE_URI = var.gokabot_base_uri
+      TARGET_IDS       = var.target_ids
     }
   }
 
