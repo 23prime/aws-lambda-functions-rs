@@ -11,6 +11,7 @@ path = "src/lambda_handler.rs"
 [dependencies]
 chrono = "0.4.19"
 dotenv = "0.15.0"
+futures = "0.3.21"
 lambda_runtime = "0.5.1"
 log = "0.4.16"
 log4rs = "1.1.1"
