@@ -22,9 +22,7 @@ async fn handler(
 ) -> Result<(), error::LambdaGeneralError> {
     info!("event: {:?}", event);
 
-    let target_ids = vec!["MY_USER_ID", "NGA_GROUP_ID", "KMT_GROUP_ID"];
-
-    let future_tasks = target_ids.into_iter().map(gokabot::call);
+    let future_tasks = get_target_ids().into_iter().map(gokabot::call);
     let result = join_all(future_tasks).await;
 
     let has_error = result.into_iter().any(|r| r.is_err());
@@ -36,4 +34,8 @@ async fn handler(
     } else {
         return Ok(());
     }
+}
+
+fn get_target_ids() -> Vec<&'static str> {
+    return vec!["MY_USER_ID", "NGA_GROUP_ID", "KMT_GROUP_ID"];
 }
