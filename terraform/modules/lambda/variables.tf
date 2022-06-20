@@ -84,6 +84,10 @@ variable "gokabot_base_uri" {
   type = string
 }
 
+variable "target_ids" {
+  type = string
+}
+
 variable "event_rules" {
   type = object({
     twitter-followee-list-schedule         = any

@@ -79,3 +79,7 @@ variable "tonarinoyj_update_checker_db_url" {
 variable "gokabot_base_uri" {
   type = string
 }
+
+variable "target_ids" {
+  type = string
+}
