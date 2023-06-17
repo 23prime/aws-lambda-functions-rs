@@ -28,8 +28,20 @@ variable "my_user_id" {
   type = string
 }
 
+variable "my_user_id_alias" {
+  type = string
+
+  default = "MY_USER_ID"
+}
+
 variable "nga_group_id" {
   type = string
+}
+
+variable "nga_group_id_alias" {
+  type = string
+
+  default = "NGA_GROUP_ID"
 }
 
 variable "webhook_url" {

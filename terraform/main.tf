@@ -42,8 +42,8 @@ module "lambda" {
     gokabot-random-message-caller = module.ecr.gokabot-random-message-caller-repo
   }
   line_channel_token = var.line_channel_token
-  my_user_id         = var.my_user_id
-  nga_group_id       = var.nga_group_id
+  my_user_id         = var.my_user_id_alias
+  nga_group_id       = var.nga_group_id_alias
   webhook_url        = var.webhook_url
   sns_topic = {
     notification-by-gokabot = module.sns.notification-by-gokabot-topic
