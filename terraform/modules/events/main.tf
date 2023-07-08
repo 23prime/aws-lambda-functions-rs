@@ -54,7 +54,7 @@ resource "aws_cloudwatch_event_rule" "gokabot-random-message-caller-schedule" {
   name        = "gokabot-random-message-caller-schedule"
   description = "Scheduled event for Lambda function: gokabot-random-message-caller"
 
-  schedule_expression = "cron(0 3,15 * * ? *)"
+  schedule_expression = "cron(0 15 * * ? *)"
 
   tags = {
     Name = "gokabot-random-message-caller-schedule"
